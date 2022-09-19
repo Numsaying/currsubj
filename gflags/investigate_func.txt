@@ -1,0 +1,72 @@
+inline Mutex();
+explicit inline Mutex(LinkerInitialized);
+inline void Lock();    // Block if needed until free then acquire exclusively
+inline void Unlock();  // Release a lock acquired via Lock()
+inline void ReaderLock();   // Block until free or shared then acquire a share
+inline void ReaderUnlock(); // Release a read share of this Mutex
+inline void WriterLock() { Lock(); }     // Acquire an exclusive lock
+inline void WriterUnlock() { Unlock(); } // Release a lock from WriterLock()
+explicit MutexLock(Mutex *mu) : mu_(mu) { mu_->Lock(); }
+explicit ReaderMutexLock(Mutex *mu) : mu_(mu) { mu_->ReaderLock(); }
+explicit WriterMutexLock(Mutex *mu) : mu_(mu) { mu_->WriterLock(); }
+extern GFLAGS_DLL_DECL void GetAllFlags(std::vector<CommandLineFlagInfo>* OUTPUT);
+extern GFLAGS_DLL_DECL void ShowUsageWithFlags(const char *argv0);  // what --help does
+extern GFLAGS_DLL_DECL void ShowUsageWithFlagsRestrict(const char *argv0, const char *restrict);
+extern GFLAGS_DLL_DECL std::string DescribeOneFlag(const CommandLineFlagInfo& flag);
+extern GFLAGS_DLL_DECL void SetArgv(int argc, const char** argv);
+extern GFLAGS_DLL_DECL const std::vector<std::string>& GetArgvs();
+extern GFLAGS_DLL_DECL const char* GetArgv();                      // all of argv as a string
+extern GFLAGS_DLL_DECL const char* GetArgv0();                     // only argv0
+extern GFLAGS_DLL_DECL uint32 GetArgvSum();                        // simple checksum of argv
+extern GFLAGS_DLL_DECL const char* ProgramInvocationName();        // argv0, or "UNKNOWN" if not set
+extern GFLAGS_DLL_DECL const char* ProgramInvocationShortName();   // basename(argv0)
+extern GFLAGS_DLL_DECL const char* ProgramUsage();                 // string set by SetUsageMessage()
+extern GFLAGS_DLL_DECL const char* VersionString();                // string set by SetVersionString()
+extern GFLAGS_DLL_DECL bool GetCommandLineOption(const char* name, std::string* OUTPUT);
+extern GFLAGS_DLL_DECL bool GetCommandLineFlagInfo(const char* name, CommandLineFlagInfo* OUTPUT);
+extern GFLAGS_DLL_DECL CommandLineFlagInfo GetCommandLineFlagInfoOrDie(const char* name);
+extern GFLAGS_DLL_DECL std::string SetCommandLineOption        (const char* name, const char* value);
+extern GFLAGS_DLL_DECL std::string SetCommandLineOptionWithMode(const char* name, const char* value, FlagSettingMode set_mode);
+FlagSaver();
+extern GFLAGS_DLL_DECL std::string CommandlineFlagsIntoString();
+extern GFLAGS_DLL_DECL bool ReadFlagsFromString(const std::string& flagfilecontents,
+extern GFLAGS_DLL_DECL bool AppendFlagsIntoFile(const std::string& filename, const char* prog_name);
+extern GFLAGS_DLL_DECL bool ReadFromFlagsFile(const std::string& filename, const char* prog_name, bool errors_are_fatal);   // uses SET_FLAGS_VALUE
+extern GFLAGS_DLL_DECL bool BoolFromEnv(const char *varname, bool defval);
+extern GFLAGS_DLL_DECL int32 Int32FromEnv(const char *varname, int32 defval);
+extern GFLAGS_DLL_DECL uint32 Uint32FromEnv(const char *varname, uint32 defval);
+extern GFLAGS_DLL_DECL int64 Int64FromEnv(const char *varname, int64 defval);
+extern GFLAGS_DLL_DECL uint64 Uint64FromEnv(const char *varname, uint64 defval);
+extern GFLAGS_DLL_DECL double DoubleFromEnv(const char *varname, double defval);
+extern GFLAGS_DLL_DECL const char *StringFromEnv(const char *varname, const char *defval);
+extern GFLAGS_DLL_DECL void SetUsageMessage(const std::string& usage);
+extern GFLAGS_DLL_DECL void SetVersionString(const std::string& version);
+extern GFLAGS_DLL_DECL uint32 ParseCommandLineFlags(int *argc, char*** argv, bool remove_flags);
+extern GFLAGS_DLL_DECL uint32 ParseCommandLineNonHelpFlags(int *argc, char*** argv, bool remove_flags);
+extern GFLAGS_DLL_DECL void HandleCommandLineHelpFlags();   // in gflags_reporting.cc
+extern GFLAGS_DLL_DECL void AllowCommandLineReparsing();
+extern GFLAGS_DLL_DECL void ReparseCommandLineNonHelpFlags();
+extern GFLAGS_DLL_DECL void ShutDownCommandLineFlags();
+template <typename FlagType> FlagRegisterer(const char* name,
+template<typename From> double GFLAGS_DLL_DECL IsBoolFlag(const From& from);
+inline clstring* dont_pass0toDEFINE_string(char *stringspot,
+inline clstring* dont_pass0toDEFINE_string(char *stringspot,
+inline clstring* dont_pass0toDEFINE_string(char *stringspot,
+StringFlagDestructor(void *current, void *defvalue)
+inline void InternalStringPrintf(std::string* output, const char* format,
+inline void SStringPrintf(std::string* output, const char* format, ...) {
+inline void StringAppendF(std::string* output, const char* format, ...) {
+inline std::string StringPrintf(const char* format, ...) {
+inline bool SafeGetEnv(const char *varname, std::string &valstr)
+inline int SafeFOpen(FILE **fp, const char* fname, const char *mode)
+[CREATOR] fLB::CompileAssert(ctor) -> ()
+[CREATOR] google::CompileAssert(ctor) -> ()
+[CREATOR] google::testing::Test(ctor) -> ()
+
+extern GFLAGS_DLL_DECL bool RegisterFlagValidator(const bool*        flag, bool (*validate_fn)(const char*, bool));
+extern GFLAGS_DLL_DECL bool RegisterFlagValidator(const int32*       flag, bool (*validate_fn)(const char*, int32));
+extern GFLAGS_DLL_DECL bool RegisterFlagValidator(const uint32*      flag, bool (*validate_fn)(const char*, uint32));
+extern GFLAGS_DLL_DECL bool RegisterFlagValidator(const int64*       flag, bool (*validate_fn)(const char*, int64));
+extern GFLAGS_DLL_DECL bool RegisterFlagValidator(const uint64*      flag, bool (*validate_fn)(const char*, uint64));
+extern GFLAGS_DLL_DECL bool RegisterFlagValidator(const double*      flag, bool (*validate_fn)(const char*, double));
+extern GFLAGS_DLL_DECL bool RegisterFlagValidator(const std::string* flag, bool (*validate_fn)(const char*, const std::string&));

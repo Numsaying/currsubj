@@ -1,0 +1,54 @@
+<h1 id="overview">{{{title}}}</h1>
+{{{desc}}}
+
+<h3 id="syntax">Syntax</h3>
+{{#syntax}}
+<pre><code>{{{syntax}}}</pre></code>
+{{/syntax}}
+{{^syntax}}
+<pre><code>({{name}} {{#arguments}}<br />    <a href="#option-{{name}}">{{name}}</a> (...){{/arguments}})</pre></code>
+{{/syntax}}
+
+<h2 id="options">List of Options</h2>
+{{#arguments}}
+  <section style="border-top: 1px solid #ddd; padding: .4em 0; margin: 0 0 1.6em 0;">
+    <a href="#option-{{name}}">
+      <h3 id="option-{{name}}">{{name}} <code>&lt;{{type}}&gt;</code></h3>
+    </a>
+
+    <div>
+      {{{desc}}}
+      {{#alias}}
+        Alias for the <a href="#option-{{alias}}">{{alias}}</a> option.
+      {{/alias}}
+    <div>
+
+    {{#desc_code}}
+      <pre><code>{{desc_code}}</code></pre>
+    {{/desc_code}}
+
+    {{#desc_detail}}
+      <div style="margin-top: 1.4em;">
+        {{{desc_detail}}}
+      <div>
+    {{/desc_detail}}
+
+    {{#examples}}
+      <h5>Examples:</h5>
+      <pre><code>{{examples}}</code></pre>
+    {{/examples}}
+
+  </section>
+{{/arguments}}
+
+{{#has_examples}}
+<h2 id="examples">Examples</h2>
+{{/has_examples}}
+{{#examples}}
+  <h4>Example: <a href="/examples/{{.}}" class="link"><code>examples/{{.}}</code></a></h4>
+  <figure>
+    <a href="/examples/{{.}}"><img src="/examples/{{.}}.svg"></a>
+  </figure>
+  <hr />
+{{/examples}}
+

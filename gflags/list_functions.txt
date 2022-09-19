@@ -1,0 +1,280 @@
+list of functions:
+
+- config.h: 0
+
+- defines.h: 0
+
+- gflags_completion.h: 1
+extern void HandleCommandLineCompletions(void)
+
+- gflags_completion.cc: 28
+static void PrintFlagCompletionInfo(void);
+static void CanonicalizeCursorWordAndSearchOptions(
+static bool RemoveTrailingChar(string *str, char c);
+static void FindMatchingFlags(
+static bool DoesSingleFlagMatch(
+static void CategorizeAllMatchingFlags(
+static void TryFindModuleAndPackageDir(
+static void FinalizeCompletionOutput(
+static void RetrieveUnusedFlags(
+static void OutputSingleGroupWithLimit(
+static string GetShortFlagLine(
+static string GetLongFlagLine(
+CompletionOptions(): flag_name_substring_search(false),
+static void PrintFlagCompletionInfo(void) {
+static void CanonicalizeCursorWordAndSearchOptions(
+static bool RemoveTrailingChar(string *str, char c) {
+static void FindMatchingFlags(
+static bool DoesSingleFlagMatch(
+static void CategorizeAllMatchingFlags(
+static void PushNameWithSuffix(vector<string>* suffixes, const char* suffix) {
+static void TryFindModuleAndPackageDir(
+int SizeInLines() const {
+static void FinalizeCompletionOutput(
+static void RetrieveUnusedFlags(
+static void OutputSingleGroupWithLimit(
+static string GetShortFlagLine(
+static string GetLongFlagLine( // anonymous
+void HandleCommandLineCompletions(void) {
+
+- gflags_declare.h: 0
+- gflags_ns.h -> gflags_gflags.h: 0 
+
+- gflags_reporting.h: 16
+static void AddString(const string& s,
+static string PrintStringFlagsWithQuotes(const CommandLineFlagInfo& flag,
+string DescribeOneFlag(const CommandLineFlagInfo& flag) {
+static string XMLText(const string& txt) {
+static string DescribeOneFlagInXML(const CommandLineFlagInfo& flag) {
+static const char* Basename(const char* filename) {
+static string Dirname(const string& filename) {
+static bool FileMatchesSubstring(const string& filename,
+static void ShowUsageWithFlagsMatching(const char *argv0,
+void ShowUsageWithFlagsRestrict(const char *argv0, const char *restrict_) {
+void ShowUsageWithFlags(const char *argv0) {
+static void ShowXMLOfFlags(const char *prog_name) {
+static void ShowVersion() {
+static void AppendPrognameStrings(vector<string>* substrings,
+void HandleCommandLineHelpFlags() {
+
+- gflags.cc: 102 (+ 18 private)
+static void ReportError(DieWhenReporting should_die, const char* format, ...) {
+// ValueType Type() const { return static_cast<ValueType>(type_); }
+friend bool TryParseLocked(const CommandLineFlag*, FlagValue*,
+[PRIVATE]  FlagValue(const FlagValue&);   // no copying!
+[PRIVATE]  void operator=(const FlagValue&);
+FlagValue::FlagValue(FlagType* valbuf,
+FlagValue::~FlagValue() {
+bool FlagValue::ParseFrom(const char* value) {
+string FlagValue::ToString() const {
+FlagValue::ValueType Type() const { return defvalue_->Type(); }
+[PRIVATE]  bool FlagValue::Validate(const char* flagname,
+[PRIVATE]  const char* FlagValue::TypeName() const {
+[PRIVATE]  bool FlagValue::Equal(const FlagValue& x) const {
+[PRIVATE]  FlagValue* FlagValue::New() const {
+[PRIVATE]  void FlagValue::CopyFrom(const FlagValue& x) {
+[PRIVATE]  FlagValue(const FlagValue&);   // no copying!
+[PRIVATE]  void operator=(const FlagValue&);
+CommandLineFlag(const char* name, const char* help, const char* filename,
+~CommandLineFlag();
+const char* name() const { return name_; }
+const char* help() const { return help_; }
+const char* filename() const { return file_; }
+const char* CleanFileName() const;  // nixes irrelevant prefix such as homedir
+string current_value() const { return current_->ToString(); }
+string default_value() const { return defvalue_->ToString(); }
+const char* type_name() const { return defvalue_->TypeName(); }
+ValidateFnProto validate_function() const { return validate_fn_proto_; }
+const void* flag_ptr() const { return current_->value_buffer_; }
+void FillCommandLineFlagInfo(struct CommandLineFlagInfo* result);
+bool Validate(const FlagValue& value) const;
+bool ValidateCurrent() const { return Validate(*current_); }
+bool Modified() const { return modified_; }
+[PRIVATE]  void CopyFrom(const CommandLineFlag& src);
+[PRIVATE]  void UpdateModifiedBit();
+[PRIVATE]  CommandLineFlag(const CommandLineFlag&);   // no copying!
+[PRIVATE]  void operator=(const CommandLineFlag&);
+bool operator() (const char* s1, const char* s2) const {
+FlagRegistry() {
+static void DeleteGlobalRegistry() {
+void RegisterFlag(CommandLineFlag* flag);
+void Lock() { lock_.Lock(); }
+void Unlock() { lock_.Unlock(); }
+CommandLineFlag* FindFlagLocked(const char* name);
+CommandLineFlag* FindFlagViaPtrLocked(const void* flag_ptr);
+CommandLineFlag* SplitArgumentLocked(const char* argument,
+bool SetFlagLocked(CommandLineFlag* flag, const char* value,
+static FlagRegistry* GlobalRegistry();   // returns a singleton registry
+[PRIVATE]  static void InitGlobalRegistry();
+[PRIVATE]  FlagRegistry(const FlagRegistry&);
+[PRIVATE]  FlagRegistry& operator=(const FlagRegistry&);
+~FlagRegistry() {
+explicit FlagRegistryLock(FlagRegistry* fr) : fr_(fr) { fr_->Lock(); }
+~FlagRegistryLock() { fr_->Unlock(); }
+explicit CommandLineFlagParser(FlagRegistry* reg) : registry_(reg) {}
+uint32 ParseNewCommandLineFlags(int* argc, char*** argv, bool remove_flags);
+void ValidateFlags(bool all);
+void ValidateUnmodifiedFlags();
+bool ReportErrors();
+string ProcessSingleOptionLocked(CommandLineFlag* flag,
+string ProcessOptionsFromStringLocked(const string& contentdata,
+string ProcessFlagfileLocked(const string& flagval, FlagSettingMode set_mode);
+string ProcessFromenvLocked(const string& flagval, FlagSettingMode set_mode,
+static void ParseFlagList(const char* value, vector<string>* flags) {
+static string ReadFileIntoString(const char* filename) {
+~CommandLineFlagParser() {}
+T GetFromEnv(const char *varname, T dflt) {
+bool AddFlagValidator(const void* flag_ptr, ValidateFnProto validate_fn_proto) {
+void RegisterCommandLineFlag(const char* name,
+FlagRegisterer::FlagRegisterer(const char* name,
+bool operator()(const CommandLineFlagInfo& a,
+void GetAllFlags(vector<CommandLineFlagInfo>* OUTPUT) {
+void SetArgv(int argc, const char** argv) {
+const vector<string>& GetArgvs() { return argvs; }
+const char* GetArgv()            { return cmdline.c_str(); }
+const char* GetArgv0()           { return argv0.c_str(); }
+uint32 GetArgvSum()              { return argv_sum; }
+const char* ProgramInvocationName() {             // like the GNU libc fn
+const char* ProgramInvocationShortName() {        // like the GNU libc fn
+void SetUsageMessage(const string& usage) {
+const char* ProgramUsage() {
+void SetVersionString(const string& version) {
+const char* VersionString() {
+bool GetCommandLineOption(const char* name, string* value) {
+bool GetCommandLineFlagInfo(const char* name, CommandLineFlagInfo* OUTPUT) {
+CommandLineFlagInfo GetCommandLineFlagInfoOrDie(const char* name) {
+string SetCommandLineOptionWithMode(const char* name, const char* value,
+string SetCommandLineOption(const char* name, const char* value) {
+explicit FlagSaverImpl(FlagRegistry* main_registry)
+~FlagSaverImpl() {
+void SaveFromRegistry() {
+void RestoreToRegistry() {
+[PRIVATE]  FlagSaverImpl(const FlagSaverImpl&);  // no copying!
+[PRIVATE]  void operator=(const FlagSaverImpl&);
+FlagSaver::FlagSaver()
+FlagSaver::~FlagSaver() {
+static string TheseCommandlineFlagsIntoString(
+string CommandlineFlagsIntoString() {
+bool ReadFlagsFromString(const string& flagfilecontents,
+bool AppendFlagsIntoFile(const string& filename, const char *prog_name) {
+bool ReadFromFlagsFile(const string& filename, const char* prog_name,
+bool BoolFromEnv(const char *v, bool dflt) {
+int32 Int32FromEnv(const char *v, int32 dflt) {
+uint32 Uint32FromEnv(const char *v, uint32 dflt) {
+int64 Int64FromEnv(const char *v, int64 dflt)    {
+uint64 Uint64FromEnv(const char *v, uint64 dflt) {
+double DoubleFromEnv(const char *v, double dflt) {
+const char *StringFromEnv(const char *varname, const char *dflt) {
+bool RegisterFlagValidator(const bool* flag,
+bool RegisterFlagValidator(const int32* flag,
+bool RegisterFlagValidator(const uint32* flag,
+bool RegisterFlagValidator(const int64* flag,
+bool RegisterFlagValidator(const uint64* flag,
+bool RegisterFlagValidator(const double* flag,
+bool RegisterFlagValidator(const string* flag,
+static uint32 ParseCommandLineFlagsInternal(int* argc, char*** argv,
+uint32 ParseCommandLineFlags(int* argc, char*** argv, bool remove_flags) {
+uint32 ParseCommandLineNonHelpFlags(int* argc, char*** argv,
+void AllowCommandLineReparsing() {
+void ReparseCommandLineNonHelpFlags() {
+void ShutDownCommandLineFlags() {
+
+- gflags.h: 53 (+ 2 private)
+extern GFLAGS_DLL_DECL bool RegisterFlagValidator(const bool*        flag, bool (*validate_fn)(const char*, bool));
+extern GFLAGS_DLL_DECL bool RegisterFlagValidator(const int32*       flag, bool (*validate_fn)(const char*, int32));
+extern GFLAGS_DLL_DECL bool RegisterFlagValidator(const uint32*      flag, bool (*validate_fn)(const char*, uint32));
+extern GFLAGS_DLL_DECL bool RegisterFlagValidator(const int64*       flag, bool (*validate_fn)(const char*, int64));
+extern GFLAGS_DLL_DECL bool RegisterFlagValidator(const uint64*      flag, bool (*validate_fn)(const char*, uint64));
+extern GFLAGS_DLL_DECL bool RegisterFlagValidator(const double*      flag, bool (*validate_fn)(const char*, double));
+extern GFLAGS_DLL_DECL bool RegisterFlagValidator(const std::string* flag, bool (*validate_fn)(const char*, const std::string&));
+extern GFLAGS_DLL_DECL void GetAllFlags(std::vector<CommandLineFlagInfo>* OUTPUT);
+extern GFLAGS_DLL_DECL void ShowUsageWithFlags(const char *argv0);  // what --help does
+extern GFLAGS_DLL_DECL void ShowUsageWithFlagsRestrict(const char *argv0, const char *restrict);
+extern GFLAGS_DLL_DECL std::string DescribeOneFlag(const CommandLineFlagInfo& flag);
+extern GFLAGS_DLL_DECL void SetArgv(int argc, const char** argv);
+extern GFLAGS_DLL_DECL const std::vector<std::string>& GetArgvs();
+extern GFLAGS_DLL_DECL const char* GetArgv();                      // all of argv as a string
+extern GFLAGS_DLL_DECL const char* GetArgv0();                     // only argv0
+extern GFLAGS_DLL_DECL uint32 GetArgvSum();                        // simple checksum of argv
+extern GFLAGS_DLL_DECL const char* ProgramInvocationName();        // argv0, or "UNKNOWN" if not set
+extern GFLAGS_DLL_DECL const char* ProgramInvocationShortName();   // basename(argv0)
+extern GFLAGS_DLL_DECL const char* ProgramUsage();                 // string set by SetUsageMessage()
+extern GFLAGS_DLL_DECL const char* VersionString();                // string set by SetVersionString()
+extern GFLAGS_DLL_DECL bool GetCommandLineOption(const char* name, std::string* OUTPUT);
+extern GFLAGS_DLL_DECL bool GetCommandLineFlagInfo(const char* name, CommandLineFlagInfo* OUTPUT);
+extern GFLAGS_DLL_DECL CommandLineFlagInfo GetCommandLineFlagInfoOrDie(const char* name);
+extern GFLAGS_DLL_DECL std::string SetCommandLineOption        (const char* name, const char* value);
+extern GFLAGS_DLL_DECL std::string SetCommandLineOptionWithMode(const char* name, const char* value, FlagSettingMode set_mode);
+FlagSaver();
+~FlagSaver();
+[PRIVATE]  FlagSaver(const FlagSaver&);  // no copying!
+[PRIVATE]  void operator=(const FlagSaver&);
+extern GFLAGS_DLL_DECL std::string CommandlineFlagsIntoString();
+extern GFLAGS_DLL_DECL bool ReadFlagsFromString(const std::string& flagfilecontents,
+extern GFLAGS_DLL_DECL bool AppendFlagsIntoFile(const std::string& filename, const char* prog_name);
+extern GFLAGS_DLL_DECL bool ReadFromFlagsFile(const std::string& filename, const char* prog_name, bool errors_are_fatal);   // uses SET_FLAGS_VALUE
+extern GFLAGS_DLL_DECL bool BoolFromEnv(const char *varname, bool defval);
+extern GFLAGS_DLL_DECL int32 Int32FromEnv(const char *varname, int32 defval);
+extern GFLAGS_DLL_DECL uint32 Uint32FromEnv(const char *varname, uint32 defval);
+extern GFLAGS_DLL_DECL int64 Int64FromEnv(const char *varname, int64 defval);
+extern GFLAGS_DLL_DECL uint64 Uint64FromEnv(const char *varname, uint64 defval);
+extern GFLAGS_DLL_DECL double DoubleFromEnv(const char *varname, double defval);
+extern GFLAGS_DLL_DECL const char *StringFromEnv(const char *varname, const char *defval);
+extern GFLAGS_DLL_DECL void SetUsageMessage(const std::string& usage);
+extern GFLAGS_DLL_DECL void SetVersionString(const std::string& version);
+extern GFLAGS_DLL_DECL uint32 ParseCommandLineFlags(int *argc, char*** argv, bool remove_flags);
+extern GFLAGS_DLL_DECL uint32 ParseCommandLineNonHelpFlags(int *argc, char*** argv, bool remove_flags);
+extern GFLAGS_DLL_DECL void HandleCommandLineHelpFlags();   // in gflags_reporting.cc
+extern GFLAGS_DLL_DECL void AllowCommandLineReparsing();
+extern GFLAGS_DLL_DECL void ReparseCommandLineNonHelpFlags();
+extern GFLAGS_DLL_DECL void ShutDownCommandLineFlags();
+template <typename FlagType> FlagRegisterer(const char* name,
+template<typename From> double GFLAGS_DLL_DECL IsBoolFlag(const From& from);
+inline clstring* dont_pass0toDEFINE_string(char *stringspot,
+inline clstring* dont_pass0toDEFINE_string(char *stringspot,
+inline clstring* dont_pass0toDEFINE_string(char *stringspot,
+StringFlagDestructor(void *current, void *defvalue)
+~StringFlagDestructor() {
+
+- mutex.h: 15 (+ 10 private)
+inline Mutex();
+explicit inline Mutex(LinkerInitialized);
+inline ~Mutex();
+inline void Lock();    // Block if needed until free then acquire exclusively
+inline void Unlock();  // Release a lock acquired via Lock()
+inline void ReaderLock();   // Block until free or shared then acquire a share
+inline void ReaderUnlock(); // Release a read share of this Mutex
+inline void WriterLock() { Lock(); }     // Acquire an exclusive lock
+inline void WriterUnlock() { Unlock(); } // Release a lock from WriterLock()
+[PRIVATE]  inline void SetIsSafe() { is_safe_ = true; }
+[PRIVATE]  explicit Mutex(Mutex* /*ignored*/) {}
+[PRIVATE]  Mutex(const Mutex&);
+[PRIVATE]  void operator=(const Mutex&);
+explicit MutexLock(Mutex *mu) : mu_(mu) { mu_->Lock(); }
+~MutexLock() { mu_->Unlock(); }
+[PRIVATE]  MutexLock(const MutexLock&);
+[PRIVATE]  void operator=(const MutexLock&);
+explicit ReaderMutexLock(Mutex *mu) : mu_(mu) { mu_->ReaderLock(); }
+~ReaderMutexLock() { mu_->ReaderUnlock(); }
+[PRIVATE]  ReaderMutexLock(const ReaderMutexLock&);
+[PRIVATE]  void operator=(const ReaderMutexLock&);
+explicit WriterMutexLock(Mutex *mu) : mu_(mu) { mu_->WriterLock(); }
+~WriterMutexLock() { mu_->WriterUnlock(); }
+[PRIVATE]  WriterMutexLock(const WriterMutexLock&);
+[PRIVATE]  void operator=(const WriterMutexLock&);
+
+- util.h: 6
+inline void InternalStringPrintf(std::string* output, const char* format,
+inline void SStringPrintf(std::string* output, const char* format, ...) {
+inline void StringAppendF(std::string* output, const char* format, ...) {
+inline std::string StringPrintf(const char* format, ...) {
+inline bool SafeGetEnv(const char *varname, std::string &valstr)
+inline int SafeFOpen(FILE **fp, const char* fname, const char *mode)
+
+- windows_port.cc
+int safe_vsnprintf(char *str, size_t size, const char *format, va_list ap) {
+int snprintf(char *str, size_t size, const char *format, ...) {
+
+- windows_port.h
+extern int GFLAGS_DLL_DECL safe_vsnprintf(char *str, size_t size,
+extern GFLAGS_DLL_DECL int snprintf(char *str, size_t size,

@@ -1,0 +1,33 @@
+arguments:
+
+  - name: scale-x
+    type: scale
+    desc: Set the type of the 'x' (horizontal) scale.
+
+  - name: scale-y
+    type: scale
+    desc: Set the type of the 'y' (vertical) scale.
+
+  - name: limit-x
+    type: limit
+    desc: Set the limits (minimum and maximum values) for the 'x' (horizontal) scale.
+
+  - name: limit-x-min
+    type: limit_min
+    desc: Set the minimum value (lower limit) for the 'x' (horizontal) scale.
+
+  - name: limit-x-max
+    type: limit-max
+    desc: Set the maximum value (upper limit) for the 'x' (horizontal) scale.
+
+  - name: limit-y
+    type: limit
+    desc: Set the limits (minimum and maximum values) for the 'y' (vertical) scale.
+
+  - name: limit-y-min
+    type: limit_min
+    desc: Set the minimum value (lower limit) for the 'y' (vertical) scale.
+
+  - name: limit-y-max
+    type: limit-max
+    desc: Set the maximum value (upper limit) for the 'y' (vertical) scale.
